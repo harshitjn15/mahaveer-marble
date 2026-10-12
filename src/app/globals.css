@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  
+  --color-gold-500: var(--accent);
+  --color-gold-600: var(--accent-hover);
+  --color-gold-400: var(--accent-soft);
+  
+  --color-dark-100: var(--background-secondary);
+  --color-dark-200: var(--background-card);
+  --color-dark-300: var(--border);
+  
+  --color-stone-600: var(--border);
+  
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui;
+  --font-serif: var(--font-playfair-display), serif;
+  --font-serif-secondary: var(--font-cormorant), serif;
+  
+  --radius: 0.75rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Light Theme - Marble Showroom Feel */
+  --background: #FFFFFF;
+  --background-secondary: #F8F8F8;
+  --background-card: #FFFFFF;
+  
+  --foreground: #111111;
+  --text-secondary: #52525B;
+  --text-muted: #71717A;
+  
+  --accent: #C6A75E;
+  --accent-soft: #E3C98B;
+  --accent-hover: #B8964E;
+  
+  --border: #E4E4E7;
+  --glass-bg: rgba(0, 0, 0, 0.03);
+  --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  /* Dark Theme - High-End Luxury */
+  --background: #0B0B0C;
+  --background-secondary: #111214;
+  --background-card: #151618;
+  
+  --foreground: #FFFFFF;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  
+  --accent: #D4AF37;
+  --accent-soft: #E6C76A;
+  --accent-hover: #C9A227;
+  
+  --border: #27272A;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --card-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-stone-600;
+    border-color: var(--border);
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply antialiased font-sans transition-colors duration-500 overflow-x-hidden;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tighter leading-[1.1];
+    font-feature-settings: "lnum", "pnum";
+  }
+
+  .font-serif-secondary {
+    @apply font-serif-secondary;
+  }
+
+  p {
+    @apply leading-relaxed font-light text-foreground/80;
+    letter-spacing: -0.01em;
+    font-family: var(--font-inter);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .hero-gradient {
+    background: linear-gradient(135deg, var(--background) 0%, var(--background-secondary) 50%, var(--background) 100%);
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, #D4AF37, #E6C76A, #C9A227);
+  }
+
+  .glass-premium {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+  }
+  
+  .glass-card {
+    background-color: var(--background-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+    @apply backdrop-blur-xl transition-all duration-500;
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, var(--accent-soft), var(--accent), var(--accent-hover));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    @apply transition-all duration-300 hover:brightness-110;
+  }
+
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+  }
+
+  .marble-texture {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1000 1000' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.002' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+  }
+}
+
+::selection {
+    @apply bg-gold-500/30 text-gold-500;
+}
+
+/* Lenis Smooth Scroll Setup */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
